@@ -1,0 +1,3 @@
+include ':gpslib'
+include ':app'
+rootProject.name = "GPS"
