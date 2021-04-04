@@ -38,20 +38,11 @@ public class GpsUtils {
     private LocationRequest locationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
 
-    public void setupLocation(Context context) {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-    }
-
-    private void getLocation(Activity context,LocationCallback locationCallback) {
+    public void getLocation(Activity context,LocationCallback locationCallback) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     locationRequestInterval);
-
         } else {
             mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
@@ -61,6 +52,13 @@ public class GpsUtils {
         this.context = context;
         this.gpsRequest = gpsRequest;
         this.locationRequestInterval = locationRequestInterval;
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         mSettingsClient = LocationServices.getSettingsClient(context);
 
