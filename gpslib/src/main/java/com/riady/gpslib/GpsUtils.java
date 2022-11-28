@@ -32,14 +32,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import static android.content.ContentValues.TAG;
 
 public class GpsUtils {
-    private Context context;
-    private Integer gpsRequest;
-    private Integer locationRequestInterval;
-    private SettingsClient mSettingsClient;
-    private LocationSettingsRequest mLocationSettingsRequest;
-    private LocationManager locationManager;
+    private final Context context;
+    private final Integer gpsRequest;
+    private final Integer locationRequestInterval;
+    private final SettingsClient mSettingsClient;
+    private final LocationSettingsRequest mLocationSettingsRequest;
+    private final LocationManager locationManager;
     private LocationRequest locationRequest;
-    private FusedLocationProviderClient mFusedLocationClient;
+    private final FusedLocationProviderClient mFusedLocationClient;
 
     public void getLocation(Activity context,LocationCallback locationCallback) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
