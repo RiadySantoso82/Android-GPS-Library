@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -28,7 +30,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import static android.content.ContentValues.TAG;
-import static androidx.core.app.ActivityCompat.requestPermissions;
 
 public class GpsUtils {
     private Context context;
@@ -41,10 +42,13 @@ public class GpsUtils {
     private FusedLocationProviderClient mFusedLocationClient;
 
     public void getLocation(Activity context,LocationCallback locationCallback) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    locationRequestInterval);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                showExplanation(context,"Permission Needed", "Location Permission needed For Capture GPS Location", Manifest.permission.ACCESS_FINE_LOCATION, locationRequestInterval);
+            } else {
+                requestPermission(context, Manifest.permission.ACCESS_FINE_LOCATION, locationRequestInterval);
+            }
         } else {
             mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
@@ -127,5 +131,25 @@ public class GpsUtils {
 
     public interface onGpsListener {
         void gpsStatus(boolean isGPSEnable);
+    }
+
+    private void showExplanation(Activity activity,String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestPermission(activity, permission, permissionRequestCode);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void requestPermission(Activity activity,String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(activity,
+                new String[]{permissionName}, permissionRequestCode);
     }
 }
