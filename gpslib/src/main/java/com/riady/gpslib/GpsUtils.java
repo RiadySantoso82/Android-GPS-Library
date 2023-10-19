@@ -61,17 +61,17 @@ public class GpsUtils {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+        locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
+        locationRequest.setInterval(30 * 1000); // 30 seconds
+        locationRequest.setFastestInterval(20 * 1000); // 20 seconds
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         mSettingsClient = LocationServices.getSettingsClient(context);
 
         locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000);
-        locationRequest.setFastestInterval(2 * 1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_NO_POWER);
+        locationRequest.setInterval(30 * 1000);
+        locationRequest.setFastestInterval(20 * 1000);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
         mLocationSettingsRequest = builder.build();
