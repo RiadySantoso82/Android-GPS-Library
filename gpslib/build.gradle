@@ -5,12 +5,12 @@ plugins {
 android {
     namespace 'com.riady.gpslib'
 
-    compileSdkVersion 33
+    compileSdkVersion 35
     buildToolsVersion "30.0.0"
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 33
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
 
