@@ -49,9 +49,21 @@ public class GpsUtils {
             } else {
                 requestPermission(context, Manifest.permission.ACCESS_FINE_LOCATION, locationRequestInterval);
             }
-        } else {
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            return;
         }
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                showExplanation(context,"Permission Needed", "Location Permission needed For Capture GPS Location", Manifest.permission.ACCESS_COARSE_LOCATION, locationRequestInterval);
+            } else {
+                requestPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION, locationRequestInterval);
+            }
+            return;
+        }
+
+        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
     public GpsUtils(Context context,Integer gpsRequest, Integer locationRequestInterval) {
